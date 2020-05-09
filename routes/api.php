@@ -20,3 +20,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 Route::get('/poem/{title}', 'PoemController@show');
+
+Route::get('/poem-links', 'PoemController@getPoemLinks');

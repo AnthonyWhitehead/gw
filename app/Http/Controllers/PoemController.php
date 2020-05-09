@@ -2,13 +2,27 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\Contracts\PoemServiceContract;
+use Exception;
 use App\Models\Poem;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
-use Illuminate\Support\Facades\Log;
 
 class PoemController extends Controller
 {
+    /**
+     *
+     * @var PoemServiceContract 
+     */
+    private $poemService;
+
+    /**
+     *
+     * @param PoemServiceContract $poemService
+     */
+    public function __construct(PoemServiceContract $poemService)
+    {
+        $this->poemService = $poemService;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -20,73 +34,34 @@ class PoemController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Get and serve Poem by title
      *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Poem  $poem
+     * @param string title 
      * @return \Illuminate\Http\Response
      */
     public function show(String $title): Response
     {
 
-        $poem = Poem::where('title', $title)->get();
+        try {
+            $poem = Poem::where('title', $title)->first();
+        } catch (Exception $e) {
+            report($e);
+        }
 
         abort_if(!$poem, '404', 'Poem not found');
 
         return response($poem);
     }
-
+    
     /**
-     * Show the form for editing the specified resource.
+     * get a list of all poems categorised 
+     * by category, in a format the front end
+     * can use to render the nav links
      *
-     * @param  \App\Poem  $poem
-     * @return \Illuminate\Http\Response
+     * @return Response
      */
-    public function edit(Poem $poem)
+    public function getPoemLinks()
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Poem  $poem
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Poem $poem)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Poem  $poem
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Poem $poem)
-    {
-        //
+        return $this->poemService->getPoemLinks();
     }
 }
