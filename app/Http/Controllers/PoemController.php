@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Poem;
+use App\Models\Poem;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Log;
 
 class PoemController extends Controller
 {
@@ -44,9 +46,14 @@ class PoemController extends Controller
      * @param  \App\Poem  $poem
      * @return \Illuminate\Http\Response
      */
-    public function show(Poem $poem)
+    public function show(String $title): Response
     {
-        //
+
+        $poem = Poem::where('title', $title)->get();
+
+        abort_if(!$poem, '404', 'Poem not found');
+
+        return response($poem);
     }
 
     /**

@@ -8,7 +8,7 @@ class PoemSeeder extends CsvSeeder
     public function __construct()
     {
         $this->file = '/database/seeds/csvs/poems.csv';
-        $this->delimiter = ',';
+        $this->delimiter = '\\';
     }
 
     /**
