@@ -10882,3 +10882,23 @@ a.text-dark:focus {
   }
 }
 
+.poem-container {
+  display: flex;
+  width: 100vw;
+  justify-content: center;
+  padding: 10rem;
+}
+
+.poem-container .card {
+  width: 100%;
+  max-width: 750px;
+  text-align: center;
+  overflow: auto;
+}
+
+.poem-container .card-media {
+  height: 500px;
+  background-position: center;
+  background-size: contain;
+}
+
